@@ -17,6 +17,10 @@ export class User extends Entity<UserProps, UserPropsJson> {
     return this.props.is_admin;
   }
 
+  get settings() {
+    return this.props.settings;
+  }
+
   private hash(value: string) {
     return Cript.hash(value);
   }

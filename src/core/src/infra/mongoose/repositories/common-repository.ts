@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { Document, FilterQuery, Model, SortOrder } from "mongoose";
-import { Entity, Id } from "../../../seedwork/entity/entity";
+import { Entity } from "../../../seedwork/entity/entity";
 import { Mapper } from "../mapper/mapper";
 
 type Options<T> = {
@@ -43,10 +43,10 @@ export class CommonRepository<
 
   async findOneBy(options?: Options<T>): Promise<E | null> {
     const item = await this.makeQuery("findOne", options).exec();
-    return this.mapper.toDomain(item);
+    return item ? this.mapper.toDomain(item) : null;
   }
 
-  async softDelete(id: Id): Promise<void> {
+  async softDelete(id: string): Promise<void> {
     await this.model
       .findByIdAndUpdate(new ObjectId(id), { deleted_at: new Date() })
       .exec();
